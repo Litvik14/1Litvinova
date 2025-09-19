@@ -11,13 +11,38 @@ struct Pipe {
     bool status;
 };
 
+struct CS {
+    string name;
+    int number_work;
+    int number_work_online;
+    string class_cs;
+};
+
+void ShowMenu(Pipe t, CS cs) {
+    int option;
+    while (1) {
+        cout << "Choose option: \n1. Add pipe; \n2. Add CS; \n3. Show all objects";
+        cin >> option;
+        switch (option) {
+        case 1:
+            cout << "Insert pipe name: ";
+            cin >> t.name;
+            break;
+        case 2:
+            break;
+        case 3:
+            cout << "\nPipe name: " << t.name;
+            break;
+        }
+    }
+}
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    cout << "Hello World!\n";
     Pipe truba;
-    cout << "Insert pipe name: ";
-    cin >> truba.name;
-    cout << "\nPipe name: " << truba.name;
+    CS comp_station;
+    ShowMenu(truba, comp_station);
     return 1;
 }
 
