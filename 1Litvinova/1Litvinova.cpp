@@ -2,10 +2,23 @@
 //
 
 #include <iostream>
+using namespace std;
+
+struct Pipe {
+    string name;
+    float lenth;
+    int diametr;
+    bool status;
+};
 
 int main()
 {
     std::cout << "Hello World!\n";
+    Pipe truba;
+    cout << "Insert pipe name: ";
+    cin >> truba.name;
+    cout << "\nPipe name: " << truba.name;
+    return 1;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
