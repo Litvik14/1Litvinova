@@ -6,7 +6,7 @@ using namespace std;
 
 struct Pipe {
     string name;
-    float lenth;
+    float length;
     int diametr;
     bool status;
 };
@@ -21,17 +21,48 @@ struct CS {
 void ShowMenu(Pipe t, CS cs) {
     int option;
     while (1) {
-        cout << "Choose option: \n1. Add pipe; \n2. Add CS; \n3. Show all objects";
+        cout << "\nChoose option: \n1. Add pipe; \n2. Add CS; \n3. Show all objects; \n4. Edit a pipe; \n5. Edit a CS; \n6. Save; \n7. Load; \n8. Exit; \n";
         cin >> option;
         switch (option) {
         case 1:
             cout << "Insert pipe name: ";
             cin >> t.name;
+            cout << "Insert pipe length: ";
+            cin >> t.length;
+            cout << "Insert pipe diametr: ";
+            cin >> t.diametr;
+            cout << "Insert pipe status (0 - not under repair, 1 - under repair): ";
+            cin >> t.status;
             break;
         case 2:
+            cout << "Insert CS name: ";
+            cin >> cs.name;
+            cout << "Insert the number of CS workshops: ";
+            cin >> cs.number_work;
+            cout << "Insert the number of CS workshops in operation: ";
+            cin >> cs.number_work_online;
+            cout << "Insert CS class: ";
+            cin >> cs.class_cs;
             break;
         case 3:
             cout << "\nPipe name: " << t.name;
+            cout << "\n Pipe length: " << t.length;
+            cout << "\nPipe diametr: " << t.diametr;
+            cout << "\nPipe status (0 - not under repair, 1 - under repair): " << t.status;
+            cout << "\nCS name: " << cs.name;
+            cout << "\nThe number of CS workshops: " << cs.number_work;
+            cout << "\nThe number of CS workshops in operation: " << cs.number_work_online;
+            cout << "\nCS class: " << cs.class_cs;
+            break;
+        case 4:
+            cout << "Insert pipe name: ";
+            cin >> t.name;
+            cout << "Insert pipe length: ";
+            cin >> t.length;
+            cout << "Insert pipe diametr: ";
+            cin >> t.diametr;
+            cout << "Insert pipe status (0 - not under repair, 1 - under repair): ";
+            cin >> t.status;
             break;
         }
     }
