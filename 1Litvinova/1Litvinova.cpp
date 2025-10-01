@@ -25,53 +25,70 @@ void ShowMenu(Pipe t, CS cs) {
     while (1) {
         cout << "\nChoose option: \n1. Add pipe; \n2. Add CS; \n3. Show all objects; \n4. Edit a pipe; \n5. Edit a CS; \n6. Save; \n7. Load; \n8. Exit; \n";
         cin >> option;
-        while (option < 1 || option > 8) {
+        while (option < 1 || option > 8 || cin.fail()) {
             cout << "Error! Please, choose number from 1 to 8: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
             cin >> option;
         }
         switch (option) {
         case 1:
             cin.clear();
-            cin.ignore();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Insert pipe name: ";
             getline(cin, t.name);
 
             cout << "Insert pipe length: ";
             cin >> t.length;
-            while (t.length <= 0) {
+            while (t.length <= 0 || cin.fail()) {
                 cout << "Error! Please, enter a positive number: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cin >> t.length;
             }
 
             cout << "Insert pipe diametr: ";
             cin >> t.diametr;
-            while (t.diametr <= 0) {
+            while (t.diametr <= 0 || cin.fail()) {
                 cout << "Error! Please, enter a positive integer: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cin >> t.diametr;
             }
 
             cout << "Insert pipe status (0 - not under repair, 1 - under repair): ";
             cin >> t.status;
-            while (t.status != 0 && t.status != 1) {
+            while ((t.status != 0 && t.status != 1) || cin.fail()) {
                 cout << "Error! Please, enter 0 or 1: ";
                 cin >> t.status;
             }
             break;
         case 2:
             cin.clear();
-            cin.ignore();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Insert CS name: ";
             getline(cin, cs.name);
+
             cout << "Insert the number of CS workshops: ";
             cin >> cs.number_work;
+            while (cs.number_work <= 0 || cin.fail()) {
+                cout << "Error! Please, enter a positive number: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cin >> cs.number_work;
+            }
+
             cout << "Insert the number of CS workshops in operation: ";
             cin >> cs.number_work_online;
-            while (cs.number_work_online > cs.number_work) {
-                cout << "Error! The number of CS workshops in operation can`t be more than the number of CS workshops: ";
+            while (cs.number_work_online <= 0 || cin.fail() || cs.number_work_online > cs.number_work) {
+                cout << "Error! Please, enter a positive number: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cin >> cs.number_work_online;
             }
+            
             cin.clear();
-            cin.ignore();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Insert CS class: ";
             getline(cin, cs.class_cs);
             break;
