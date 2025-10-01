@@ -1,2 +1,8 @@
-PIPE  -1.07374e+08 -858993460 -858993460
-CS 2 2 2 1 2
+Pipe fg bnm
+1
+1
+1
+CS df vbn
+1
+1
+cvb bnm

@@ -148,10 +148,24 @@ void SaveAll(Pipe& t, CS& cs) {
 
     ofstream out("data.txt");
     if (out.is_open()) {
-        out << "PIPE " << t.name << " " << t.length << " " << t.diametr << " " << t.status << endl;
-        out << "CS " << cs.name << " " << cs.number_work << " " << cs.number_work_online << " " << cs.class_cs << endl;
-        out.close();
-        cout << "All data saved to file!" << endl;
+        if (t.name.empty() || cs.name.empty()) {
+            cout << "Error! No pipe or CS exists!" << endl;
+            return;
+        }
+        else {
+            out << "Pipe ";
+            out << t.name << endl;
+            out << t.length << endl;
+            out << t.diametr << endl;
+            out << t.status << endl;
+            out << "CS ";
+            out << cs.name << endl;
+            out << cs.number_work << endl;
+            out << cs.number_work_online << endl;
+            out << cs.class_cs << endl;
+            out.close();
+            cout << "All data saved to file!" << endl;
+        }
     }
     else {
         cout << "Error! Couldn't save data to file!" << endl;
@@ -164,11 +178,19 @@ void LoadAll(Pipe& t, CS& cs) {
     if (in.is_open()) {
         string type;
         while (in >> type) {
-            if (type == "PIPE") {
-                in >> t.name >> t.length >> t.diametr >> t.status;
+            if (type == "Pipe") {
+                getline(in, t.name);
+                in >> t.length;
+                in >> t.diametr;
+                in >> t.status;
             }
             else if (type == "CS") {
-                in >> cs.name >> cs.number_work >> cs.number_work_online >> cs.class_cs;
+                getline(in, cs.name);
+                in >> cs.number_work;
+                in >> cs.number_work_online;
+                in.clear();
+                in.ignore(numeric_limits<streamsize>::max(), '\n');
+                getline(in, cs.class_cs);
             }
         }
         in.close();
