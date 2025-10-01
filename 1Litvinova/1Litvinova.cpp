@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <limits>
 using namespace std;
 
 struct Pipe {
@@ -20,8 +21,167 @@ struct CS {
     string class_cs;
 };
 
-void ShowMenu(Pipe t, CS cs) {
+void AddPipe(Pipe& t) {
+
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Insert pipe name: ";
+    getline(cin, t.name);
+
+    cout << "Insert pipe length: ";
+    cin >> t.length;
+    while (t.length <= 0 || cin.fail() || (cin.peek() != '\n')) {
+        cout << "Error! Please, enter a positive number: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> t.length;
+    }
+
+    cout << "Insert pipe diametr: ";
+    cin >> t.diametr;
+    while (t.diametr <= 0 || cin.fail() || (cin.peek() != '\n') && (cin.peek() != '\t')) {
+        cout << "Error! Please, enter a positive integer: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> t.diametr;
+    }
+
+    cout << "Insert pipe status (0 - not under repair, 1 - under repair): ";
+    cin >> t.status;
+    while ((t.status != 0 && t.status != 1) || cin.fail() || (cin.peek() != '\n')) {
+        cout << "Error! Please, enter 0 or 1: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> t.status;
+    }
+}
+
+void AddCS(CS& cs) {
+
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Insert CS name: ";
+    getline(cin, cs.name);
+
+    cout << "Insert the number of CS workshops: ";
+    cin >> cs.number_work;
+    while (cs.number_work <= 0 || cin.fail() || (cin.peek() != '\n') && (cin.peek() != '\t')) {
+        cout << "Error! Please, enter a positive number: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> cs.number_work;
+    }
+
+    cout << "Insert the number of CS workshops in operation: ";
+    cin >> cs.number_work_online;
+    while (cs.number_work_online < 0 || cin.fail() || cs.number_work_online > cs.number_work || (cin.peek() != '\n') && (cin.peek() != '\t')) {
+        cout << "Error! Please, enter a positive number no more than the number of CG workshops: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> cs.number_work_online;
+    }
+
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Insert CS class: ";
+    getline(cin, cs.class_cs);
+}
+
+void EditPipe(Pipe& t) {
+
+    if (t.name.empty()) {
+        cout << "No pipe exists!" << endl;
+        return;
+    }
+
+    cout << "Current status: " << t.status << " (0 - not under repair, 1 - under repair)\n";
+    cout << "Change status to: ";
+    cin >> t.status;
+    while ((t.status != 0 && t.status != 1) || cin.fail()) {
+        cout << "Error! Please, enter 0 or 1: ";
+        cin >> t.status;
+    }
+    cout << "Status changed!\n";
+}
+
+void EditCS(CS& cs) {
+
+    if (cs.name.empty()) {
+        cout << "No CS exists!" << endl;
+        return;
+    }
+    cout << "Current number of workshops in operation: " << cs.number_work_online << cs.number_work_online << "of" << cs.number_work << endl;
+    cout << "Change the number of workshops in operation: ";
+    cin >> cs.number_work_online;
+    while (cs.number_work_online < 0 || cin.fail() || cs.number_work_online > cs.number_work) {
+        cout << "Error! Please, enter a positive number no more than the number of CS workshops: ";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> cs.number_work_online;
+    }
+    cout << "Number changed!\n";
+}
+
+void ReadPipe(Pipe& t) {
+
+    if (t.name.empty()) {
+        cout << "\nNo pipe exists!" << endl;
+        return;
+    }
+    else {
+        cout << "\nPIPE \nPipe name: " << t.name << "\nPipe length: " << t.length << "\nPipe diametr: " << t.diametr << "\nPipe status: " << t.status << endl;
+    }
+}
+
+void ReadCS(CS& cs) {
+
+    if (cs.name.empty()) {
+        cout << "No CS exists!" << endl;
+        return;
+    }
+    else {
+        cout << "\n CS \nCS name: " << cs.name << "\nThe number of CS workshops: " << cs.number_work << "\nThe number of CS workshops in operation: " << cs.number_work_online << "\nCS class: " << cs.class_cs << endl;
+    }
+}
+
+void SaveAll(Pipe& t, CS& cs) {
+
+    ofstream out("data.txt");
+    if (out.is_open()) {
+        out << "PIPE " << t.name << " " << t.length << " " << t.diametr << " " << t.status << endl;
+        out << "CS " << cs.name << " " << cs.number_work << " " << cs.number_work_online << " " << cs.class_cs << endl;
+        out.close();
+        cout << "All data saved to file!" << endl;
+    }
+    else {
+        cout << "Error! Couldn't save data to file!" << endl;
+    }
+}
+
+void LoadAll(Pipe& t, CS& cs) {
+
+    ifstream in("data.txt");
+    if (in.is_open()) {
+        string type;
+        while (in >> type) {
+            if (type == "PIPE") {
+                in >> t.name >> t.length >> t.diametr >> t.status;
+            }
+            else if (type == "CS") {
+                in >> cs.name >> cs.number_work >> cs.number_work_online >> cs.class_cs;
+            }
+        }
+        in.close();
+        cout << "All data loaded from file!" << endl;
+    }
+    else {
+        cout << "Error! Couldn't load data from file!" << endl;
+    }
+}
+
+void ShowMenu(Pipe& t, CS& cs) {
     int option;
+
     while (1) {
         cout << "\nChoose option: \n1. Add pipe; \n2. Add CS; \n3. Show all objects; \n4. Edit a pipe; \n5. Edit a CS; \n6. Save; \n7. Load; \n8. Exit; \n";
         cin >> option;
@@ -32,105 +192,49 @@ void ShowMenu(Pipe t, CS cs) {
             cin >> option;
         }
         switch (option) {
+
         case 1:
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Insert pipe name: ";
-            getline(cin, t.name);
-
-            cout << "Insert pipe length: ";
-            cin >> t.length;
-            while (t.length <= 0 || cin.fail()) {
-                cout << "Error! Please, enter a positive number: ";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> t.length;
-            }
-
-            cout << "Insert pipe diametr: ";
-            cin >> t.diametr;
-            while (t.diametr <= 0 || cin.fail()) {
-                cout << "Error! Please, enter a positive integer: ";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> t.diametr;
-            }
-
-            cout << "Insert pipe status (0 - not under repair, 1 - under repair): ";
-            cin >> t.status;
-            while ((t.status != 0 && t.status != 1) || cin.fail()) {
-                cout << "Error! Please, enter 0 or 1: ";
-                cin >> t.status;
-            }
+            AddPipe(t);
             break;
+
         case 2:
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Insert CS name: ";
-            getline(cin, cs.name);
-
-            cout << "Insert the number of CS workshops: ";
-            cin >> cs.number_work;
-            while (cs.number_work <= 0 || cin.fail()) {
-                cout << "Error! Please, enter a positive number: ";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> cs.number_work;
-            }
-
-            cout << "Insert the number of CS workshops in operation: ";
-            cin >> cs.number_work_online;
-            while (cs.number_work_online <= 0 || cin.fail() || cs.number_work_online > cs.number_work) {
-                cout << "Error! Please, enter a positive number: ";
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cin >> cs.number_work_online;
-            }
-            
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Insert CS class: ";
-            getline(cin, cs.class_cs);
+            AddCS(cs);
             break;
+
         case 3:
-            cout << "\nPipe name: " << t.name;
-            cout << "\nPipe length: " << t.length;
-            cout << "\nPipe diametr: " << t.diametr;
-            cout << "\nPipe status (0 - not under repair, 1 - under repair): " << t.status;
-            cout << "\nCS name: " << cs.name;
-            cout << "\nThe number of CS workshops: " << cs.number_work;
-            cout << "\nThe number of CS workshops in operation: " << cs.number_work_online;
-            cout << "\nCS class: " << cs.class_cs;
+            ReadPipe(t);
+            ReadCS(cs);
             break;
+
         case 4:
-            cout << "Current status: " << t.status << " (0 - not under repair, 1 - under repair)\n";
-            cout << "Change status to: ";
-            cin >> t.status;
-            while (t.status != 0 && t.status != 1) {
-                cout << "Error! Please, enter 0 or 1: ";
-                cin >> t.status;
-            }
-            cout << "Status changed!\n";
+            EditPipe(t);
             break;
+
         case 5:
-            cout << "Insert CS name: ";
-            cin >> cs.name;
-            cout << "Insert the number of CS workshops: ";
-            cin >> cs.number_work;
-            cout << "Insert the number of CS workshops in operation: ";
-            cin >> cs.number_work_online;
-            cout << "Insert CS class: ";
-            cin >> cs.class_cs;
+            EditCS(cs);
             break;
+
         case 6:
+            if (t.name.empty() && cs.name.empty()) {
+                cout << "Error! No data to save!" << endl;
+            }
+            else {
+                SaveAll(t, cs);
+            }
             break;
+
         case 7:
+            LoadAll(t, cs);
             break;
+
         case 8:
-            break;
+            cout << "Goodbye!" << endl;
+            exit(0);
         }
     }
 }
+
+
 
 int main()
 {
