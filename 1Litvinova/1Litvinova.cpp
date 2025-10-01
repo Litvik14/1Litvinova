@@ -2,13 +2,15 @@
 //
 
 #include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
 
 struct Pipe {
     string name;
     float length;
     int diametr;
-    bool status;
+    int status;
 };
 
 struct CS {
@@ -23,18 +25,77 @@ void ShowMenu(Pipe t, CS cs) {
     while (1) {
         cout << "\nChoose option: \n1. Add pipe; \n2. Add CS; \n3. Show all objects; \n4. Edit a pipe; \n5. Edit a CS; \n6. Save; \n7. Load; \n8. Exit; \n";
         cin >> option;
+        while (option < 1 || option > 8) {
+            cout << "Error! Please, choose number from 1 to 8: ";
+            cin >> option;
+        }
         switch (option) {
         case 1:
+            cin.clear();
+            cin.ignore();
             cout << "Insert pipe name: ";
-            cin >> t.name;
+            getline(cin, t.name);
+
             cout << "Insert pipe length: ";
             cin >> t.length;
+            while (t.length <= 0) {
+                cout << "Error! Please, enter a positive number: ";
+                cin >> t.length;
+            }
+
             cout << "Insert pipe diametr: ";
             cin >> t.diametr;
+            while (t.diametr <= 0) {
+                cout << "Error! Please, enter a positive integer: ";
+                cin >> t.diametr;
+            }
+
             cout << "Insert pipe status (0 - not under repair, 1 - under repair): ";
             cin >> t.status;
+            while (t.status != 0 && t.status != 1) {
+                cout << "Error! Please, enter 0 or 1: ";
+                cin >> t.status;
+            }
             break;
         case 2:
+            cin.clear();
+            cin.ignore();
+            cout << "Insert CS name: ";
+            getline(cin, cs.name);
+            cout << "Insert the number of CS workshops: ";
+            cin >> cs.number_work;
+            cout << "Insert the number of CS workshops in operation: ";
+            cin >> cs.number_work_online;
+            while (cs.number_work_online > cs.number_work) {
+                cout << "Error! The number of CS workshops in operation can`t be more than the number of CS workshops: ";
+                cin >> cs.number_work_online;
+            }
+            cin.clear();
+            cin.ignore();
+            cout << "Insert CS class: ";
+            getline(cin, cs.class_cs);
+            break;
+        case 3:
+            cout << "\nPipe name: " << t.name;
+            cout << "\nPipe length: " << t.length;
+            cout << "\nPipe diametr: " << t.diametr;
+            cout << "\nPipe status (0 - not under repair, 1 - under repair): " << t.status;
+            cout << "\nCS name: " << cs.name;
+            cout << "\nThe number of CS workshops: " << cs.number_work;
+            cout << "\nThe number of CS workshops in operation: " << cs.number_work_online;
+            cout << "\nCS class: " << cs.class_cs;
+            break;
+        case 4:
+            cout << "Current status: " << t.status << " (0 - not under repair, 1 - under repair)\n";
+            cout << "Change status to: ";
+            cin >> t.status;
+            while (t.status != 0 && t.status != 1) {
+                cout << "Error! Please, enter 0 or 1: ";
+                cin >> t.status;
+            }
+            cout << "Status changed!\n";
+            break;
+        case 5:
             cout << "Insert CS name: ";
             cin >> cs.name;
             cout << "Insert the number of CS workshops: ";
@@ -44,25 +105,11 @@ void ShowMenu(Pipe t, CS cs) {
             cout << "Insert CS class: ";
             cin >> cs.class_cs;
             break;
-        case 3:
-            cout << "\nPipe name: " << t.name;
-            cout << "\n Pipe length: " << t.length;
-            cout << "\nPipe diametr: " << t.diametr;
-            cout << "\nPipe status (0 - not under repair, 1 - under repair): " << t.status;
-            cout << "\nCS name: " << cs.name;
-            cout << "\nThe number of CS workshops: " << cs.number_work;
-            cout << "\nThe number of CS workshops in operation: " << cs.number_work_online;
-            cout << "\nCS class: " << cs.class_cs;
+        case 6:
             break;
-        case 4:
-            cout << "Insert pipe name: ";
-            cin >> t.name;
-            cout << "Insert pipe length: ";
-            cin >> t.length;
-            cout << "Insert pipe diametr: ";
-            cin >> t.diametr;
-            cout << "Insert pipe status (0 - not under repair, 1 - under repair): ";
-            cin >> t.status;
+        case 7:
+            break;
+        case 8:
             break;
         }
     }
