@@ -207,7 +207,7 @@ void ShowMenu(Pipe& t, CS& cs) {
     while (1) {
         cout << "\nChoose option: \n1. Add pipe; \n2. Add CS; \n3. Show all objects; \n4. Edit a pipe; \n5. Edit a CS; \n6. Save; \n7. Load; \n8. Exit; \n";
         cin >> option;
-        while (option < 1 || option > 8 || cin.fail()) {
+        while (option < 1 || option > 8 || cin.fail() || (cin.peek() != '\n')) {
             cout << "Error! Please, choose number from 1 to 8: ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
